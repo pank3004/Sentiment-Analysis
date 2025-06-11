@@ -1,0 +1,10 @@
+https://dagshub.com/pank3004/Sentiment-Analysis.mlflow
+
+
+import dagshub
+dagshub.init(repo_owner='pank3004', repo_name='Sentiment-Analysis', mlflow=True)
+
+import mlflow
+with mlflow.start_run():
+  mlflow.log_param('parameter name', 'value')
+  mlflow.log_metric('metric name', 1)
