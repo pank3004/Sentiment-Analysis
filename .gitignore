@@ -183,3 +183,5 @@ notebooks/test.ipynb
 cred.txt
 
 data/raw
+
+data/interim

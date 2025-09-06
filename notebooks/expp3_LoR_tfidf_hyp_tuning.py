@@ -50,7 +50,7 @@ def lower_case(text):
     words=[word.lower() for word in words]
     return ' '.join(words)
 
-
+# remove stop words
 def remove_stop_words(text): 
     stop_words=set(stopwords.words('english'))
     text=[word for word in text.split() if word not in stop_words]
