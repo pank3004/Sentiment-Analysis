@@ -19,5 +19,7 @@ uvicorn
 jinja2
 imblearn
 nltk
+mlflow==2.14.3
+dagshub
 
 -e .
