@@ -182,8 +182,8 @@ notebooks/test.ipynb
 
 cred.txt
 
-data/
+/models/
 
-models/
+/reports/
 
-reports/
+/data/
