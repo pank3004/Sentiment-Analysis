@@ -36,7 +36,7 @@
 22. git add - commit - push
 
 23. Need to add S3 as remote storage - Create IAM User(keep cred) and S3 bucket
-24. pip install - dvc[s3] & awscli
+24. pip install --upgrade dvc[s3] & pip install awscli
 25. Checking/deleting dvc remote (optional) - [dvc remote list & dvc remote remove <name>] 
 26. Set aws cred - aws configure
 27. Add s3 as dvc remote storage - dvc remote add -d myremote s3://<bucket-name>
