@@ -1,24 +1,10 @@
 import unittest
-import os
-import mlflow
 from flask_app.app import app
 
 class FlaskAppTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Setup MLflow credentials (if available)
-        dagshub_token = os.getenv("CAPSTONE_TEST")
-        if dagshub_token:
-            os.environ["MLFLOW_TRACKING_USERNAME"] = "pank3004"
-            os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
-
-            dagshub_url = "https://dagshub.com"
-            repo_owner = "pank3004"
-            repo_name = "Sentiment-Analysis"
-
-            mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
-
         cls.client = app.test_client()
 
     def test_home_page(self):
@@ -34,6 +20,5 @@ class FlaskAppTests(unittest.TestCase):
             "Response should contain either 'Positive' or 'Negative'"
         )
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
