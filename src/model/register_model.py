@@ -6,8 +6,7 @@ import logging
 from src.logger import logging
 import os
 import dagshub
-from src.exception import MyException
-import sys
+
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
@@ -50,7 +49,7 @@ def load_model_info(file_path: str) -> dict:
         raise
     except Exception as e:
         logging.error('Unexpected error occurred while loading the model info: %s', e)
-        raise MyException(e,sys)
+        raise
 
 def register_model(model_name: str, model_info: dict):
     """Register the model to the MLflow Model Registry."""
@@ -71,18 +70,18 @@ def register_model(model_name: str, model_info: dict):
         logging.debug(f'Model {model_name} version {model_version.version} registered and transitioned to Staging.')
     except Exception as e:
         logging.error('Error during model registration: %s', e)
-        raise MyException(e,sys)
+        raise
 
 def main():
     try:
         model_info_path = 'reports/experiment_info.json'
         model_info = load_model_info(model_info_path)
         
-        model_name = "Sentiment Analysis Model"
+        model_name = "my_model"
         register_model(model_name, model_info)
     except Exception as e:
         logging.error('Failed to complete the model registration process: %s', e)
-        raise MyException(e,sys)
-    
+        print(f"Error: {e}")
+
 if __name__ == '__main__':
     main()
