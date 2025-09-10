@@ -183,9 +183,12 @@ notebooks/test.ipynb
 cred.txt
 
 
-/reports/
+
 
 /data/
 
 models/model.pkl 
 models/vectorizer.pkl 
+
+reports/experiment_info.json
+reports/metrics.json
