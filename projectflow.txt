@@ -161,6 +161,7 @@ kubectl get svc
   >> edit ci.yaml, deployment.yaml, dockerfile
   >> Also edit the security group for nodes and edit inbound rule for 5000 port
 
+   cheak: kubectl get pods
 
 48. Once the LoadBalancer service is up, get the external IP:
 kubectl get svc flask-app-service

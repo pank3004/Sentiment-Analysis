@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-app          # ✅ Deployment name (can be anything)
+  name: flask-app
   labels:
-    app: flask-app         # ✅ Label (must match Service selector below)
+    app: flask-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-app       # ✅ Must match template.metadata.labels
+      app: flask-app
   template:
     metadata:
       labels:
-        app: flask-app     # ✅ Must match Service selector
+        app: flask-app
     spec:
       containers:
-      - name: flask-app    # ✅ Container name (can be anything)
-        image: 020866158197.dkr.ecr.us-east-1.amazonaws.com/sentiment-repo:latest  # ⬅ MUST match your ECR repo + tag
+      - name: flask-app
+        image: 020866158197.dkr.ecr.us-east-1.amazonaws.com/flask-app:latest
         ports:
         - containerPort: 5000
         resources:
@@ -30,18 +30,18 @@ spec:
         - name: CAPSTONE_TEST
           valueFrom:
             secretKeyRef:
-              name: capstone-secret  # ✅ Must match your Secret resource
-              key: CAPSTONE_TEST     # ✅ Must exist as a key in the Secret
+              name: capstone-secret
+              key: CAPSTONE_TEST
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-app-service  # ✅ Service name (can be anything)
+  name: flask-app-service
 spec:
   type: LoadBalancer
   selector:
-    app: flask-app         # ✅ Must match Deployment’s Pod labels
+    app: flask-app
   ports:
     - name: http
       protocol: TCP
