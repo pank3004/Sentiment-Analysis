@@ -192,3 +192,5 @@ models/vectorizer.pkl
 
 reports/experiment_info.json
 reports/metrics.json
+
+eksctl.zip

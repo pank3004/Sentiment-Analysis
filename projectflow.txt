@@ -85,6 +85,8 @@ If the path points to your Anaconda environment (e.g., C:\Users\Personal\anacond
 
 * Uninstall Python-Based AWS CLI(Remove the conflicting AWS CLI from your Python environment): pip uninstall awscli
 * Verify it's uninstalled: aws --version
+* download https://awscli.amazonaws.com/AWSCLIV2.msi
+* Recheak : Get-Command aws  (it should be C:\Program Files\Amazon\AWSCLIV2\aws.exe )
 * Update Environment Variables:
 > Make sure the .msi AWS CLI path is in your system PATH (usually installed at C:\Program Files\Amazon\AWSCLIV2\aws.exe).
 > Add it to your PATH if missing: Open Control Panel > System > Advanced System Settings > Environment Variables. Under "System Variables," find Path, and add the AWS CLI path: C:\Program Files\Amazon\AWSCLIV2\
@@ -92,14 +94,19 @@ If the path points to your Anaconda environment (e.g., C:\Users\Personal\anacond
 ----------------------------------------------------------------------------------
 
 * Download kubectl: Invoke-WebRequest -Uri "https://dl.k8s.io/release/v1.28.2/bin/windows/amd64/kubectl.exe" -OutFile "kubectl.exe"
-* Locate the Download: Get-Location
-* Move kubectl.exe to a directory in your system PATH, such as C:\Windows\System32: Move-Item -Path .\kubectl.exe -Destination "C:\Windows\System32"
+* Locate the Download> fGet Lcoation > where.exe kubectl.exe
+* Move kubectl.exe to a directory in your system PATH, such as C:\Windows\System32: Move-Item -Path .\kubectl.exe -Destination "C:\Windows\System32"    ( from vs code powershell there can be Access to the path is denied so try fromm powershell adminstrator)
+    or from PowerShell administrator: Move-Item -Path "C:\End to End MLOPS\Sentiment-Analysis\kubectl.exe" -Destination "C:\Windows\System32"
 * Test if kubectl is properly installed: kubectl version --client
 
 
-* Download eksctl: Invoke-WebRequest -Uri "https://github.com/weaveworks/eksctl/releases/download/v0.158.0/eksctl_Windows_amd64.zip" -OutFile "eksctl.zip"
+* cheak eksctl cluster verison : https://github.com/eksctl-io/eksctl/releases and download latest
+* Download eksctl: Invoke-WebRequest -Uri "https://github.com/weaveworks/eksctl/releases/download/v0.214.0/eksctl_Windows_amd64.zip" -OutFile "eksctl.zip"
 * Extract eksctl: Expand-Archive -Path .\eksctl.zip -DestinationPath .
-* Move the extracted eksctl.exe file to C:\Windows\System32 or any folder in your system PATH: Move-Item -Path .\eksctl.exe -Destination "C:\Windows\System32\eksctl.exe"
+* Move the extracted eksctl.exe file to C:\Windows\System32 or any folder in your system PATH: Move-Item -Path .\eksctl.exe -Destination "C:\Windows\System32\eksctl.exe"     ( from vs code powershell there can be Access to the path is denied so try fromm powershell adminstrator)
+   or from  powershell administrator : Move-Item -Path "C:\End to End MLOPS\Sentiment-Analysis\eksctl.exe" -Destination "C:\Windows\System32\eksctl.exe"
+* cheak location : where.exe eksctl.exe    (it should be at this location> C:\Windows\System32\eksctl.exe )
+
 ----------------------------------------------------------------------------------
 * Verify AWS CLI: aws --version
 * Verify kubectl: kubectl version --client
@@ -107,7 +114,21 @@ If the path points to your Anaconda environment (e.g., C:\Users\Personal\anacond
 ----------------------------------------------------------------------------------
 
 39. Create an EKS cluster:
-    eksctl create cluster --name flask-app-cluster --region us-east-1 --nodegroup-name flask-app-nodes --node-type t3.small --nodes 1 --nodes-min 1 --nodes-max 1 --managed
+    eksctl create cluster --name flask-app-cluster --region us-east-1 --nodegroup-name flask-app-nodes --node-type t3.micro --nodes 1 --nodes-min 1 --nodes-max 1 --managed 
+
+    ERROR i faced : "You've reached your quota for maximum Fleet Requests for this account."
+        SOLUTION : 
+
+            
+    if cluster fail before creating then cmd to  Delete the Existing CloudFormation Stack and nodegroup stack
+        aws cloudformation delete-stack --stack-name eksctl-flask-app-cluster-cluster --region us-east-1
+        aws cloudformation delete-stack --stack-name eksctl-flask-app-cluster-nodegroup-flask-app-nodes --region us-east-1
+    
+    To delete cluser: 
+        eksctl delete cluster --name flask-app-cluster --region us-east-1
+                        or
+        eksctl delete cluster --region=us-east-1 --name=flask-app-cluster
+
 
 40. Update kubectl Config(Once the cluster is created, eksctl will automatically update your kubectl config file. However, you can verify and set it manually using:)
 aws eks --region us-east-1 update-kubeconfig --name flask-app-cluster (This ensures your kubectl is pointing to the correct cluster.)
