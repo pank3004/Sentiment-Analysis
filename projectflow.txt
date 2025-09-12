@@ -163,11 +163,10 @@ kubectl get svc
 
    cheak: kubectl get pods
 
-kubectl create secret docker-registry ecr-registry-secret `
-  --docker-server=020866158197.dkr.ecr.us-east-1.amazonaws.com `
-  --docker-username=AWS `
-  --docker-password (aws ecr get-login-password --region us-east-1) `
-  --docker-email=pankajkumawatew3004@gmail.com
+   i faced a error: ImagePullBackOff
+   reason:image: 010526273513.dkr.ecr.us-east-1.amazonaws.com/flask-app:latest
+   in deployment.yaml i am using different aws account account number that's why eks unable to pull the image from the ecr
+
 
 
 48. Once the LoadBalancer service is up, get the external IP:
@@ -177,7 +176,7 @@ kubectl get svc flask-app-service
 curl http://a6bf6255d5f61470c9782b8955c98271-1409247973.us-east-1.elb.amazonaws.com:5000
 
 
-
+aad955271112d473c8d0fa30659bf455-1470642951.us-east-1.elb.amazonaws.com:5000
 
 
 
@@ -185,15 +184,17 @@ curl http://a6bf6255d5f61470c9782b8955c98271-1409247973.us-east-1.elb.amazonaws.
 
 50. Launch an Ubuntu EC2 Instance for Prometheus: t3.medium,  20GB of disk space (general-purpose SSD), Security Group: Allow inbound access on ports: 9090 for Prometheus Web UI, 22 for SSH access
 
-51. SSH into the EC2 Instance(optional or connect directly to ec2 server alternatively):
-ssh -i your-key.pem ubuntu@your-ec2-public-ip
+(optional here)
+51. SSH into the EC2 Instance(optional or connect directly to ec2 server (from terminal ) alternatively):
+        ssh -i your-key.pem ubuntu@your-ec2-public-ip
 
-52. Update packages: sudo apt update && sudo apt upgrade -y
+52. connect with public ip and Update packages: sudo apt update && sudo apt upgrade -y
 
 53. Download Prometheus:
-wget https://github.com/prometheus/prometheus/releases/download/v2.46.0/prometheus-2.46.0.linux-amd64.tar.gz
-tar -xvzf prometheus-2.46.0.linux-amd64.tar.gz
-mv prometheus-2.46.0.linux-amd64 prometheus
+wget https://github.com/prometheus/prometheus/releases/download/v3.5.0/prometheus-3.5.0.linux-amd64.tar.gz
+
+tar -xvzf prometheus-3.5.0.linux-amd64.tar.gz
+mv prometheus-3.5.0.linux-amd64 prometheus
 
 54. Move files to standard paths:
 sudo mv prometheus /etc/prometheus
@@ -209,7 +210,7 @@ global:
 scrape_configs:
   - job_name: "flask-app"
     static_configs:
-      - targets: ["a6bf6255d5f61470c9782b8955c98271-1409247973.us-east-1.elb.amazonaws.com:5000"]  # Replace with your app's External IP
+      - targets: ["aad955271112d473c8d0fa30659bf455-1470642951.us-east-1.elb.amazonaws.com:5000"]  # Replace with your app's External IP
 
 
 
@@ -230,16 +231,17 @@ This should return the full path to the prometheus binary, such as /usr/local/bi
 
 58. Launch an Ubuntu EC2 Instance for Grafana: t3.medium,  20GB of disk space (general-purpose SSD), Security Group: Allow inbound access on ports: 3000 for Grafana Web UI, 22 for SSH access
 
-59. SSH into the EC2 Instance(optional or connect directly to ec2 server alternatively):
+(optional here)
+59. SSH into the EC2 Instance(optional or connect directly to ec2 server from terminal alternatively):
 ssh -i your-key.pem ubuntu@your-ec2-public-ip
 
 60. Update and upgrade system packages:
 sudo apt update && sudo apt upgrade -y
 
-61. Download Grafana: wget https://dl.grafana.com/oss/release/grafana_10.1.5_amd64.deb
-(this is a stable version for now; adjust the link if necessary.)
+61. Download Grafana: wget https://dl.grafana.com/oss/release/grafana_12.1.1_amd64.deb
+    (this is a stable version for now; adjust the link if necessary.)
 
-62. Install Grafana: sudo apt install ./grafana_10.1.5_amd64.deb -y
+62. Install Grafana: sudo apt install ./grafana_12.1.1_amd64.deb -y
 
 63. Start the Grafana service: sudo systemctl start grafana-server
 
