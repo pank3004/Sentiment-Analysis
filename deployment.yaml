@@ -17,6 +17,8 @@ spec:
       containers:
       - name: flask-app
         image: 020866158197.dkr.ecr.us-east-1.amazonaws.com/flask-app:latest
+      imagePullSecrets:
+      - name: ecr-registry-secret
         ports:
         - containerPort: 5000
         resources:
