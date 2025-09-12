@@ -114,12 +114,13 @@ If the path points to your Anaconda environment (e.g., C:\Users\Personal\anacond
 ----------------------------------------------------------------------------------
 
 39. Create an EKS cluster:
-    eksctl create cluster --name flask-app-cluster --region us-east-1 --nodegroup-name flask-app-nodes --node-type t3.micro --nodes 1 --nodes-min 1 --nodes-max 1 --managed 
+    eksctl create cluster --name flask-app-cluster --region us-east-1 --nodegroup-name flask-app-nodes --node-type t3.small --nodes 1 --nodes-min 1 --nodes-max 1 --managed 
+ 
 
-    ERROR i faced : "You've reached your quota for maximum Fleet Requests for this account."
-        SOLUTION : 
+    at this point i faced an error > during cloudformation statck 
+    how i identified this error > go aws> cloudformation> event> "You've reached your quota for maximum Fleet Requests for this account."
+    Solution : request to increase quata (5)> wait for 24 hr to 48 hr for approval the request > then try again 
 
-            
     if cluster fail before creating then cmd to  Delete the Existing CloudFormation Stack and nodegroup stack
         aws cloudformation delete-stack --stack-name eksctl-flask-app-cluster-cluster --region us-east-1
         aws cloudformation delete-stack --stack-name eksctl-flask-app-cluster-nodegroup-flask-app-nodes --region us-east-1
